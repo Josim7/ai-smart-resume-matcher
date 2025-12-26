@@ -2,14 +2,15 @@ import os
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+
 from text_cleaner import clean_text
 
 
 def match_resumes(resume_file, job_file):
-    # Get project root directory
+    # Get project root directory (ai-smart-resume-matcher-main)
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-    # Build correct file paths
+    # Build absolute paths
     resume_path = os.path.join(BASE_DIR, resume_file)
     job_path = os.path.join(BASE_DIR, job_file)
 
@@ -28,7 +29,7 @@ def match_resumes(resume_file, job_file):
         resumes["cleaned"].tolist() + [job_cleaned]
     )
 
-    # Similarity
+    # Similarity calculation
     scores = cosine_similarity(vectors[:-1], vectors[-1])
 
     resumes["match_score"] = scores
